@@ -1,5 +1,5 @@
 # CLI_Tester
-This will be a command line unit test tool. 
+This will be a command line unit test tool. I will start with making a C++ version and create a C specific version in the future. 
 
 ## What I Want
 I want this to be a very simple framework. Ideally it would be a single header file but I may include a .c file that must be built along side everything else. I want a nice looking list of tests and if they passed.
