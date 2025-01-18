@@ -4,13 +4,7 @@
 
 int main(int argc, char** argv){
 	/*Call this function at the start of main()*/
-	if(1){
-		puts("Test Ran");
-		goto fin;
-	}
+	init_testing_mode(argc, argv);
 	
-	puts("Here");
-
-fin:
 	return 0;
 }
