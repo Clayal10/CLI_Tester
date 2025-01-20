@@ -6,8 +6,8 @@
 
 int main(int argc, char** argv){
 	init_testing_mode(argc, argv);
-
-	printf("%d\n", cli_test::testing_mode);
+	test_main();
+	run_tests();
 
 	return 0;
 }

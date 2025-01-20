@@ -1,13 +1,21 @@
 #include "../cli_test.hpp"
 #include "example.hpp"
 
-TEST test1(){
-	CLI::is_equal(2, 2);
-}
-cli_test::unit_tests.push_back(&test1);
+void test_main(){
+	//Example
+	TEST("test1", {
+		CLI::is_true(true), 
+		CLI::is_equal(1, 1),
+		CLI::is_false(true)
+	});
 
-TEST test2(){
-	CLI::is_equal(1, 2);
-	CLI::is_false(0);
+	TEST("test2", {
+		CLI::is_not_equal(1.0, operations::add(1, 2)),
+		CLI::is_false(false)		
+	});
+
 }
-cli_test::unit_tests.push_back(&test2);
+
+//Explanation:
+//	This is a macro that stores an std::pair of first = test_name and second = std::vector_of_tests
+//

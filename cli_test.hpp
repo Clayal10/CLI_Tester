@@ -9,25 +9,30 @@
 
 #include<iostream>
 #include<vector>
+#include<utility>
 /****Colored text macros****/
+//	cli_test::unit_tests.push_back(std::make_pair(std::string("test3"), (std::vector<int>){CLI::is_true(true), CLI::is_equal(1, 1)}));
 #define COLOR_RED "\x1b[31m"
 #define COLOR_GREEN "\x1b[32m"
 #define COLOR_RESET "\x1b[0m"
 
+#define TEST(X, ...) \
+	cli_test::unit_tests.push_back(std::make_pair(X, (std::vector<int>)__VA_ARGS__))
 
-//list of function pointers. Functions will be the CLI class methods
-typedef void TEST;
 //For easy access in test.cpp
 namespace cli_test{
 	inline int testing_mode = 0;
-	std::vector<void(*)()> unit_tests;
+	inline std::vector<std::pair<std::string, std::vector<int>>> unit_tests;
 }
 
 
 /****Testing object****/
 class CLI{
 public:
-//Worried about the scope of the template here	
+	//test_method is for printing
+	void test_method(std::pair<std::string, std::vector<int>> parameters);
+
+	//Worried about the scope of the template here	
 	template <typename T>
 	static int is_equal(T first, T second){
 		return first == second;
@@ -52,7 +57,7 @@ inline int init_testing_mode(int argc, char** argv);
 //Called from init_testing_mode TODO something
 //I need to decide what to do with the rest of the code in main if we are in test mode. It could still be ran or it could be skipped over some how?
 inline void run_tests();
-
+void test_main();
 
 /****Function Definitions****/ //may move to a seperate file eventually.
 int init_testing_mode(int argc, char** argv){
@@ -69,14 +74,16 @@ int init_testing_mode(int argc, char** argv){
 		}
 	}
 	//At this point we are in test mode.
-	run_tests();
-
 	return 1;
 }
 
 void run_tests(){
 	puts("Tests will be run when this is implimented.");
 	cli_test::testing_mode = 1;
+	
+
+	printf("number of tests: %ld\n", cli_test::unit_tests.size());
+
 }
 
 #endif
