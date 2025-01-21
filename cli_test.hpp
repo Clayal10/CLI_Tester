@@ -1,15 +1,10 @@
-//To do:
-//	I need a way to access the returns of the methods in test.c in a nice user friendly way.
-//	Try this:
-//		push back function pointers that take a CLI method return in as a parameter
-//
-
 #ifndef CLI_TEST_HPP
 #define CLI_TEST_HPP
 
 #include<iostream>
 #include<vector>
 #include<utility>
+#include<typeinfo>
 /****Colored text macros****/
 //	cli_test::unit_tests.push_back(std::make_pair(std::string("test3"), (std::vector<int>){CLI::is_true(true), CLI::is_equal(1, 1)}));
 #define COLOR_RED "\x1b[31m"
@@ -32,58 +27,83 @@ public:
 	//test_method is for printing
 	void test_method(std::pair<std::string, std::vector<int>> parameters);
 
-	//Worried about the scope of the template here	
+	//Basic asserts
 	template <typename T>
 	static int is_equal(T first, T second){
 		return first == second;
 	}
 	template <typename T>
 	static int is_not_equal(T first, T second){
-		return first == second;
+		return !(first == second);
 	}
-	static int is_true(bool condition){
+	static int is_true(int condition){
 		return condition;
 	}
-	static int is_false(bool condition){
+	static int is_not_true(int condition){
 		return !condition;
+	}
+	//More niche asserts
+	template <typename one, typename two>
+	static int is_same_type(one first, two second){
+		return typeid(first) == typeid(second);
+	}
+	template <typename one, typename two>
+	static int is_not_same_type(one first, two second){
+		return !(typeid(first) == typeid(second));
 	}
 };
 
 
 /****Function Prototypes****/
-//Called at the start of main. This will be the only function called in main.
-//Returns: true or false (for now)
-inline int init_testing_mode(int argc, char** argv);
-//Called from init_testing_mode TODO something
-//I need to decide what to do with the rest of the code in main if we are in test mode. It could still be ran or it could be skipped over some how?
-inline void run_tests();
+//Called at the start of main. All of these need to be included at the start of main()
+inline void init_testing_mode(int argc, char** argv);
 void test_main();
+inline void run_tests();
 
 /****Function Definitions****/ //may move to a seperate file eventually.
-int init_testing_mode(int argc, char** argv){
+void init_testing_mode(int argc, char** argv){
 	if(argc <= 1){
-		return 0;
+		return;
 	}
 	char test_flag[7] = "--test";
 	for(int i=0; i<6; i++){
 		if(argv[1][i] == '\0'){
-			return 0;
+			return;
 		}
 		if(argv[1][i] != test_flag[i]){
-			return 0;
+			return;
 		}
 	}
 	//At this point we are in test mode.
-	return 1;
+	cli_test::testing_mode = 1;
 }
 
 void run_tests(){
-	puts("Tests will be run when this is implimented.");
-	cli_test::testing_mode = 1;
+	if(cli_test::testing_mode == 0){
+		return;
+	}	
+
+	for(unsigned long int test_num = 0; test_num<cli_test::unit_tests.size(); test_num++){
+		printf("CLI TEST: %s\n", cli_test::unit_tests[test_num].first.c_str());
+		int passed = 1;
+		for(unsigned long int assert_num = 0; assert_num<cli_test::unit_tests[test_num].second.size(); assert_num++){
+			if(cli_test::unit_tests[test_num].second[assert_num] == 0){
+				passed = 0;
+			}
+		}
+		printf("Result: ");
+		if(passed == 1){
+			printf(COLOR_GREEN "PASSED" COLOR_RESET);
+		}else{
+			printf(COLOR_RED "FAILED" COLOR_RESET);
+		}
+		printf("\n\n");
+
+	}
 	
 
-	printf("number of tests: %ld\n", cli_test::unit_tests.size());
-
+	//don't run everything else in main
+	exit(0);
 }
 
 #endif

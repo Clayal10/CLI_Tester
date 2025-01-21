@@ -9,5 +9,6 @@ int main(int argc, char** argv){
 	test_main();
 	run_tests();
 
+	puts("in main");
 	return 0;
 }
