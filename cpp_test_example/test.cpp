@@ -27,13 +27,15 @@ void test_main(){
 		CLI::is_equal("test", "test")
 	});
 	TEST("rm test", {
-        CLI::is_equal(2, 2),
-        CLI::is_not_equal(1, 2),
-        CLI::is_true(true),
-        CLI::is_not_true(false),
-        CLI::is_same_type(1.0, 1.0),
-        CLI::is_not_same_type(1.0, 1),
-			
+		CLI::is_equal(2, 2),
+       		CLI::is_not_equal(1, 2),
+		CLI::is_true(true),
+        	CLI::is_not_true(false),
+        	CLI::is_same_type(1.0, 1.0),
+       		CLI::is_not_same_type(1.0, 1),	
+	});
+	TEST("close test", {
+		CLI::is_close(3.0, 2.99, 0.0)		
 	});
 
 }

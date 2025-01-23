@@ -51,6 +51,18 @@ public:
 	static int is_not_same_type(one first, two second){
 		return !(typeid(first) == typeid(second));
 	}
+	//Automatic margin is 1 (casted to T) if margin is entered as 0
+	template <typename T>
+	static int is_close(T first, T second, double margin){
+		double  m_margin = margin;
+		if(margin == 0){
+			m_margin = 0.5;
+		}
+		if(first < second + m_margin && first > second - m_margin/2){
+			return 1;
+		}
+		return 0;
+	}
 };
 
 
