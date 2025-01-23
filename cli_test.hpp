@@ -6,24 +6,36 @@
 #include<utility>
 #include<typeinfo>
 /****Colored text macros****/
-//	cli_test::unit_tests.push_back(std::make_pair(std::string("test3"), (std::vector<int>){CLI::is_true(true), CLI::is_equal(1, 1)}));
 #define COLOR_RED "\x1b[31m"
 #define COLOR_GREEN "\x1b[32m"
 #define COLOR_RESET "\x1b[0m"
 
 #define TEST(X, ...) \
-	cli_test::unit_tests.push_back(std::make_pair(X, (std::vector<int>)__VA_ARGS__))
-
-//For easy access in test.cpp
-namespace cli_test{
-	inline int testing_mode = 0;
-	inline std::vector<std::pair<std::string, std::vector<int>>> unit_tests;
-}
-
-
+	CLI::unit_tests.push_back(std::make_pair(X, (std::vector<int>)__VA_ARGS__))
+typename std::pair<std::string, std::vector<int>> test_type;
 /****Testing object****/
 class CLI{
+	int testing_mode = 0;
+	std::vector<test_type> unit_tests;
 public:
+	//Vector helper functions
+	static void add_test(test_type t){
+		unit_tests.push_back(t);
+	}
+	static void set_testing_mode(int bit){
+		testing_mode = bit;
+	}
+	static unsigned long int get_NOT(){
+		return unit_tests.size();
+	}
+	//NEED:
+	//-Some Indexing system
+	//	-test name
+	//	-number of asserts in test
+	//	-values of asserts in tests
+	static int get_testing_mode(){
+		return testing_mode;
+	}
 	//test_method is for printing
 	void test_method(std::pair<std::string, std::vector<int>> parameters);
 
@@ -87,11 +99,11 @@ void init_testing_mode(int argc, char** argv){
 		}
 	}
 	//At this point we are in test mode.
-	cli_test::testing_mode = 1;
+	CLI::testing_mode = 1;
 }
 
 void run_tests(){
-	if(cli_test::testing_mode == 0){
+	if(CLI::get_testing_mode() == 0){
 		return;
 	}	
 
