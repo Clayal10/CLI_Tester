@@ -25,7 +25,7 @@ This will forgo anything in your main function after "run_tests()" is called in 
 ### Writing Unit Tests
 This is the syntax to write a unit test:
 ```cpp
-int test_main(){
+void test_main(){
     //This test will pass
     TEST("test_name", {
         CLI::is_equal(2, 2),
@@ -34,6 +34,7 @@ int test_main(){
         CLI::is_not_true(false),
         CLI::is_same_type(1.0, 1.0),
         CLI::is_not_same_type(1.0, 1),
+	CLI::is_close(3.0, 2.99, 0.0)		
     });
 }
 ```
