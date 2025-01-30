@@ -22,7 +22,31 @@ static inline void run_tests();
  * 	- Could us va_args (see if we can avoid)
  * 		- Have a list of size 2, index 0 being test name and index 1 being a list of booleans.
  * 	- Use some sort of dynamically sized list for all the unit tests, esentially create our own std::vector.
+ *
+ *Example of what i want to impliment in CLI struct: 
+  	foo_int (int a)  
+	foo_char (char b)  
+	foo_float_int (float c , int d)
+	
+	#define foo(_1, ...) _Generic((_1),                                  \
+	                              int: foo_int,                          \
+	                              char: foo_char,                        \
+	                              float: _Generic((FIRST(__VA_ARGS__,)), \
+	                                     int: foo_float_int))(_1, __VA_ARGS__)
+	#define FIRST(A, ...) A
+ *
  * */
+
+
+
+#define is_equal()
+struct CLI{
+	int is_equal()
+}
+
+struct unit_test{
+	char* name;
+};
 
 
 void init_testing_mode(int argc, char** argv){
